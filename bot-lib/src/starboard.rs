@@ -57,7 +57,7 @@ impl Starboard {
         emote_name: &str,
     ) -> bool {
         let check = self.enough_reactions(reaction_count)
-            && self.is_message_recent(&message.timestamp)
+            && Self::is_message_recent(&message.timestamp)
             && self.is_channel_allowed(message.channel_id.into())
             && self.is_emote_allowed(emote_name)
             && self.is_message_unseen(&message.link())
@@ -89,7 +89,7 @@ impl Starboard {
         None => panic!("Failed to create time check"),
     };
 
-    fn is_message_recent(&self, message_timestamp: &serenity::Timestamp) -> bool {
+    fn is_message_recent(message_timestamp: &serenity::Timestamp) -> bool {
         let message_timestamp = message_timestamp.unix_timestamp();
         let check = message_timestamp > (chrono::Utc::now() - Self::ONE_WEEK).timestamp();
 
@@ -104,8 +104,9 @@ impl Starboard {
         let check = self
             .ignored_channel_ids
             .as_ref()
-            .map(|ignored_channel_ids| !ignored_channel_ids.contains(&channel_id))
-            .unwrap_or(true);
+            .map_or(true, |ignored_channel_ids| {
+                !ignored_channel_ids.contains(&channel_id)
+            });
 
         let check_text = if check { "allowed" } else { "disallowed" };
         tracing::trace!("channel_id {} is {}", channel_id, check_text);
@@ -218,10 +219,10 @@ impl Starboard {
                         if let serenity::Channel::Guild(channel) = channel {
                             format!(" ({})", channel.name)
                         } else {
-                            "".to_string()
+                            String::new()
                         }
                     })
-                    .unwrap_or("".to_string())
+                    .unwrap_or(String::new())
             ))
             .author(author)
             .timestamp(message.timestamp);

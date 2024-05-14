@@ -68,13 +68,9 @@ async fn main() -> Result<()> {
                 Box::pin(event_handler(ctx, event, framework, data))
             },
             on_error: |error| {
-                async fn on_error(
-                    error: poise::FrameworkError<'_, AppState, color_eyre::eyre::Error>,
-                ) {
-                    tracing::error!("{}", error);
-                }
-
-                Box::pin(on_error(error))
+                Box::pin(async move {
+                    tracing::error!("{error}");
+                })
             },
             ..Default::default()
         })

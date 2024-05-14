@@ -26,7 +26,7 @@ pub async fn create_class_category(
             ctx,
             serenity::EditRole::new()
                 .hoist(true)
-                .name(format!("CS {}", number_string)),
+                .name(format!("CS {number_string}")),
         )
         .await
         .wrap_err("Couldn't create role")?;
@@ -34,7 +34,7 @@ pub async fn create_class_category(
     let category = guild
         .create_channel(
             ctx,
-            serenity::CreateChannel::new(format!("CS {}", number_string))
+            serenity::CreateChannel::new(format!("CS {number_string}"))
                 .kind(ChannelType::Category)
                 .permissions(vec![
                     PermissionOverwrite {
@@ -60,7 +60,7 @@ pub async fn create_class_category(
     guild
         .create_channel(
             ctx,
-            serenity::CreateChannel::new(format!("{}-resources", number_string))
+            serenity::CreateChannel::new(format!("{number_string}-resources"))
                 .kind(ChannelType::Text)
                 .category(category.id),
         )
@@ -70,7 +70,7 @@ pub async fn create_class_category(
     guild
         .create_channel(
             ctx,
-            serenity::CreateChannel::new(format!("{}-general", number_string))
+            serenity::CreateChannel::new(format!("{number_string}-general"))
                 .kind(ChannelType::Text)
                 .category(category.id),
         )

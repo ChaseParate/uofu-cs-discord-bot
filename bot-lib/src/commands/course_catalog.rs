@@ -12,7 +12,7 @@ struct CourseList(Vec<Course>);
 #[non_exhaustive]
 struct Course {
     #[serde(rename = "__catalogCourseId")]
-    course_id: String,
+    id: String,
     pid: String,
     title: String,
 }
@@ -37,7 +37,7 @@ pub async fn course_catalog(ctx: PoiseContext<'_>, course_id: String) -> Result<
     }
 
     if course_id.chars().next().unwrap().is_numeric() {
-        course_id = format!("cs{}", course_id);
+        course_id = format!("cs{course_id}");
     }
 
     let courses = COURSES.get_or_init(|| {
@@ -57,9 +57,9 @@ pub async fn course_catalog(ctx: PoiseContext<'_>, course_id: String) -> Result<
     let Some(course) = courses
         .0
         .iter()
-        .find(|course| course.course_id.to_lowercase() == course_id)
+        .find(|course| course.id.to_lowercase() == course_id)
     else {
-        ctx.reply(format!("Could not find a course with id {}", course_id))
+        ctx.reply(format!("Could not find a course with id {course_id}"))
             .await?;
         return Ok(());
     };
@@ -70,7 +70,7 @@ pub async fn course_catalog(ctx: PoiseContext<'_>, course_id: String) -> Result<
         CreateReply::default()
             .embed(
                 serenity::CreateEmbed::new()
-                    .title(format!("{} - {}", course.course_id, course.title))
+                    .title(format!("{} - {}", course.id, course.title))
                     .description(
                         get_description(&course.pid)
                             .await
@@ -93,10 +93,8 @@ struct CourseInformation {
 }
 
 async fn get_description(course_pid: &str) -> Result<String> {
-    let data_url = format!(
-        "https://utah.kuali.co/api/v1/catalog/course/{}/{}",
-        U_OF_U_COURSE_API_ID, course_pid
-    );
+    let data_url =
+        format!("https://utah.kuali.co/api/v1/catalog/course/{U_OF_U_COURSE_API_ID}/{course_pid}",);
 
     let course_data: CourseInformation = reqwest::get(data_url).await?.json().await?;
 

@@ -71,12 +71,10 @@ pub async fn lynch(ctx: PoiseContext<'_>, victim: User) -> Result<()> {
                 .push(LYNCH_KNOWN_MESSAGE_PORTION)
                 .mention(&victim)
                 .push(format!(
-                    "? ({} {}'s needed)\n",
-                    LYNCH_REQUIRED_REACTION_COUNT, LYNCH_YES_REACTION,
+                    "? ({LYNCH_REQUIRED_REACTION_COUNT} {LYNCH_YES_REACTION}'s needed)\n",
                 ))
                 .push(format!(
-                    "Or, vote {} to lynch the author: ||",
-                    LYNCH_NO_REACTION
+                    "Or, vote {LYNCH_NO_REACTION} to lynch the author: ||"
                 ))
                 .mention(&lyncher)
                 .push("||\n")
@@ -125,7 +123,7 @@ pub async fn update_interval() {
             *lynch_opportunities = (*lynch_opportunities + 1).min(LYNCH_DEFAULT_OPPORTUNITIES);
             tracing::info!("Updated lynch opportunities to {lynch_opportunities}");
         })
-        .await
+        .await;
 }
 
 // Handle a reaction

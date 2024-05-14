@@ -49,8 +49,7 @@ pub async fn event_handler(
                 handle_starboards(ctx, framework.user_data, &message, reaction)
             )
             .pipe(|(err1, err2)| match (err1, err2) {
-                (Err(e), _) => Err(e),
-                (_, Err(e)) => Err(e),
+                (Err(e), _) | (_, Err(e)) => Err(e),
                 _ => Ok(()),
             })
         }

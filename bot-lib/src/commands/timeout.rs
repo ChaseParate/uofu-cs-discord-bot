@@ -56,7 +56,7 @@ pub async fn timeout(
         ctx.send(
             CreateReply::default()
                 .ephemeral(true)
-                .content(format!("Timed out until {}", timeout_end)),
+                .content(format!("Timed out until {timeout_end}")),
         )
         .await?;
     }

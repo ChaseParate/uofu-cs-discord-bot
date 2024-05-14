@@ -33,7 +33,7 @@ fn parse_line(input: &str) -> IResult<&str, Case> {
         input,
         Case {
             regex: regex.map_err(|_| {
-                println!("regex {} failed to compile", content);
+                println!("regex {content} failed to compile");
                 nom::Err::Failure(ParseError::from_error_kind(input, ErrorKind::Fail))
             })?,
             negated: is_negated,

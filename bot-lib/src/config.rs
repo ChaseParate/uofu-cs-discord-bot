@@ -70,13 +70,13 @@ impl Default for Config {
             default_text_detect_cooldown: get_default_text_detect_cooldown(),
             starboards: vec![],
             guild_id: 0,
-            skip_duration_text: "".to_owned(),
+            skip_duration_text: String::new(),
             help_text: None,
             bot_react_role_id: 0,
             responses: vec![],
             default_hit_rate: 1.,
-            skip_hit_rate_text: "".to_owned(),
-            config_path: "".to_owned(),
+            skip_hit_rate_text: String::new(),
+            config_path: String::new(),
             bot_react_role_members: vec![],
         }
     }

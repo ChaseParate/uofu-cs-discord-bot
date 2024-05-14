@@ -18,13 +18,13 @@ pub struct AppState {
 
 impl AppState {
     pub fn new(config: Config) -> AppState {
-        let config_path = config.config_path.to_owned();
-        let config = Arc::new(RwLock::new(config));
-
         use notify::{
             event::{AccessKind, AccessMode},
             Event, EventKind, RecursiveMode, Watcher,
         };
+
+        let config_path = config.config_path.clone();
+        let config = Arc::new(RwLock::new(config));
 
         let config_clone = Arc::clone(&config);
 

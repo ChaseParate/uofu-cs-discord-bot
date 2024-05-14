@@ -47,7 +47,7 @@ impl Ruleset {
 struct RulesetVisitor {}
 
 impl RulesetVisitor {
-    fn visit_str<E>(self, v: &str) -> Result<Ruleset, E>
+    fn visit_str<E>(v: &str) -> Result<Ruleset, E>
     where
         E: serde::de::Error,
     {
@@ -70,21 +70,21 @@ impl<'de> Visitor<'de> for RulesetVisitor {
     where
         E: serde::de::Error,
     {
-        self.visit_str(v)
+        Self::visit_str(v)
     }
 
     fn visit_string<E>(self, v: String) -> Result<Self::Value, E>
     where
         E: serde::de::Error,
     {
-        self.visit_str(&v)
+        Self::visit_str(&v)
     }
 
     fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>
     where
         E: serde::de::Error,
     {
-        self.visit_str(v)
+        Self::visit_str(v)
     }
 }
 
